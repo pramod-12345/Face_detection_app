@@ -1,118 +1,117 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import React from 'react';
-import type {PropsWithChildren} from 'react';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
-  useColorScheme,
   View,
+  Button,
+  Alert
 } from 'react-native';
-
 import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+  useEffect,
+  useState,
+  useRef
+} from 'react';
+import {
+  Frame,
+  useCameraDevice,
+  Camera as MainCamera,
+  CameraRecordingOptions,
+  useCameraDevices,
+  VideoFile
+} from 'react-native-vision-camera';
+import {
+  Face,
+  Camera,
+  FaceDetectionOptions
+} from 'react-native-vision-camera-face-detector';
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+export default function App() {
+  const faceDetectionOptions = useRef<FaceDetectionOptions>({
+    // detection options
+  }).current;
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+  
+  const camera = useRef<MainCamera>(null)
+  const device = useCameraDevice('front');
+  const [faces, setFaces] = useState<Face[]>([]);
+  const [isRecording, setIsRecording] = useState(false);
+  const [video, setVideo] = useState<VideoFile | null>(null);
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+  useEffect(() => {
+    (async () => {
+      const status = await MainCamera.requestCameraPermission();
+      console.log({ status });
+    })();
+  }, [device]);
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  function handleFacesDetection(
+    detectedFaces: Face[],
+    frame: Frame
+  ) {
+    setFaces(detectedFaces);
+  }
+
+  const handleFinish =()=>{
+    //Upload video here
+    Alert.alert('Face Detection App', 'Video Saved Successfully.')
+    
+  }
+
+  const startRecording = async () => {
+    if (device) {
+      setIsRecording(true);
+      camera?.current?.startRecording({
+  onRecordingFinished: (video) => {
+    console.log('finish --->', video)
+    handleFinish()
+  },
+  onRecordingError: (error) => console.error('error --->', error )
+})
+      setTimeout(() => {
+         camera?.current?.stopRecording()
+         setIsRecording(false);
+         
+
+      }, 3000); // Stop recording after 10 seconds
+    }
   };
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <View style={{ flex: 1 }}>
+      {!!device ? (
+        <>
+          <Camera
+            isActive
+            ref={camera}
+            style={StyleSheet.absoluteFill}
+            device={device}
+            video={true}
+            audio={false} 
+            faceDetectionCallback={handleFacesDetection}
+            faceDetectionOptions={faceDetectionOptions}
+          /><View style={{position: 'absolute', bottom: 50 , left: 0 , right: 0}}>
+          
+          <Button title={isRecording ? "Recording..." : "Start Recording"} onPress={startRecording} disabled={isRecording} />
+          </View>
+          {faces.map((face, index) => (
+            face.bounds ? (
+              <View
+                key={index}
+                style={{
+                  borderWidth: 2,
+                  borderColor: 'green',
+                  position: 'absolute',
+                  left: face.bounds.x,
+                  top: face.bounds.y,
+                  width: face.bounds.width,
+                  height: face.bounds.height,
+                }}
+              />
+            ) : null
+          ))}
+        </>
+      ) : (
+        <Text>No Device</Text>
+      )}
+    </View>
   );
 }
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
-
-export default App;
