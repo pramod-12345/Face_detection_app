@@ -1,79 +1,56 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# React Native Face Detection and Video Recording App
 
-# Getting Started
+This project is a React Native application that utilizes face detection technology and video recording capabilities. When a face is detected, a green rectangle is drawn around it. The app also allows users to record a 10-second video, which is then uploaded to a Node.js server.
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+## Getting Started
 
-## Step 1: Start the Metro Server
+### Prerequisites
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+Before you begin, ensure you have completed the environment setup for React Native development as per the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) guide.
 
-To start Metro, run the following command from the _root_ of your React Native project:
+### Installation
+ bash
+git clone https://github.com/pramod-12345/Face_detection_app
+cd your-project-folder
+1. **Clone the repository:** 
+git clone https://your-repository-url.git
+cd your-project-folder
+2. yarn install
+3. yarn start or npm start 
 
-```bash
-# using npm
-npm start
 
-# OR using Yarn
-yarn start
-```
+### Running the Application
 
-## Step 2: Start your Application
+1. **Open a new terminal and run the app on Android:**
+    npm run android (for android)
+    npm run ios (for ios)
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+ Ensure your Android Emulator or iOS Simulator is running before executing these commands.
 
-### For Android
+## Features
 
-```bash
-# using npm
-npm run android
+- **Face Detection:** Utilizes `react-native-vision-camera-face-detector` to detect faces in real-time and draw a green rectangle around them.
+- **Video Recording:** Allows recording of a 10-second video.
+- **Video Upload:** Automatically uploads the recorded video to a Node.js server.
 
-# OR using Yarn
-yarn android
-```
+## Modifying the App
 
-### For iOS
+To make changes to the app:
 
-```bash
-# using npm
-npm run ios
+1. Open `VideoScreen.tsx` in your preferred text editor.
+2. Make your changes and save the file.
 
-# OR using Yarn
-yarn ios
-```
+## Troubleshooting
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+If you encounter issues, refer to the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) guide on the React Native documentation.
 
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
+## Learn More
 
-## Step 3: Modifying your App
+To learn more about React Native, consider the following resources:
 
-Now that you have successfully run the app, let's modify it.
+- [React Native Documentation](https://reactnative.dev/docs/getting-started) - Comprehensive resource to get started and advance with React Native.
+- [React Native Blog](https://reactnative.dev/blog) - Stay updated with the latest news and updates from the React Native team.
 
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
+## Conclusion
 
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+This app demonstrates the integration of face detection and video recording in a React Native application. It's a great starting point for developers looking to implement similar features in their apps.
