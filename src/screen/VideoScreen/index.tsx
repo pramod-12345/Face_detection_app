@@ -60,7 +60,7 @@ export default function VideoScreen() {
   const startRecording = async () => {
     if (device) {
       setIsRecording(true);
-      setCountdown(3); // Initialize countdown
+      setCountdown(10); // Initialize countdown
       camera?.current?.startRecording({
         onRecordingFinished: video => {
           console.log('finish --->', video);
